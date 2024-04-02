@@ -1,6 +1,5 @@
 import json
 import os
-
 import validators
 from django.conf import settings
 from rest_framework import status
@@ -101,26 +100,6 @@ class TaskApiTest(APILiveServerTestCase):
         )
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
-        # build the dataset
-
-        build_dt_payload = {"dataset_id": 1, "zoom_level": ["19"]}
-        res = self.client.post(
-            f"{API_BASE}/dataset/image/build/",
-            json.dumps(build_dt_payload),
-            headers=json_type_header,
-        )
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
-        # build dataset on multiple zoom levels
-
-        build_dt_payload = {"dataset_id": 1, "zoom_level": ["19", "20"]}
-        res = self.client.post(
-            f"{API_BASE}/dataset/image/build/",
-            json.dumps(build_dt_payload),
-            headers=json_type_header,
-        )
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
         # create model
 
         model_payload = {"name": "My test model", "dataset": 1}
@@ -135,6 +114,7 @@ class TaskApiTest(APILiveServerTestCase):
             "epochs": 1,
             "batch_size": 1,
             "model": 1,
+            "zoom_level": [1, 2, 3, 4],
         }
         res = self.client.post(
             f"{API_BASE}/training/",
